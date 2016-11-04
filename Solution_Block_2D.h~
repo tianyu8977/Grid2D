@@ -1,0 +1,57 @@
+#ifndef SOLUTION_BLOCK2D_H
+#define SOLUTION_BLOCK2D_H
+
+#include<cassert>
+#include<vector>
+#include"Block_2D.h"
+
+namespace knoblauch {
+
+  class Solution_Block_2D : public Block_2D {
+
+  protected:
+    std::vector<float_type> variable;
+
+  public:
+
+  Solution_Block_2D(const Solution_Block_2D& block) :
+    Block_2D(block),
+    variable(get_number_of_cells()) {}
+
+  Solution_Block_2D(Solution_Block_2D&& block) :
+    Block_2D(block),
+    variable(get_number_of_cells()) {}
+
+  Solution_Block_2D(unsigned int num_nodes_i,
+		    unsigned int num_nodes_j,
+		    const std::vector<Vector2D>& nodes_in,
+		    const std::shared_ptr<Curve2D_Base>& boundary_i_pos_in,
+		    const std::shared_ptr<Curve2D_Base>& boundary_i_neg_in,
+		    const std::shared_ptr<Curve2D_Base>& boundary_j_pos_in,
+		    const std::shared_ptr<Curve2D_Base>& boundary_j_neg_in) :
+    Block_2D(num_nodes_i,
+	     num_nodes_j,
+	     nodes_in,
+	     boundary_i_pos_in,
+	     boundary_i_neg_in,
+	     boundary_j_pos_in,
+	     boundary_j_neg_in),
+    variable(get_number_of_cells()) {}      
+    
+    Solution_Block_2D& operator=(const Solution_Block_2D& block) {
+      Block_2D::operator=(block);
+      variable.resize(get_number_of_cells());
+      return *this;
+    }
+
+    Solution_Block_2D& operator=(Solution_Block_2D&& block) {
+      Block_2D::operator=(std::move(block));
+      variable.resize(get_number_of_cells());
+      return *this;
+    }
+
+
+  };
+} //namespace knoblauch
+
+#endif
